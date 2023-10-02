@@ -1,0 +1,75 @@
+.container {
+  color: black;
+}
+
+/* Estilos generales de la lista de tareas */
+.task_list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/* Estilos de cada elemento de la lista de tareas */
+.task_item {
+  border: 1px solid #ccc;
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #f9f9f9;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Estilos del encabezado */
+.task_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.task_title {
+  font-size: 1.2rem;
+}
+
+.task_user {
+  color: #888;
+}
+
+/* Estilos de los detalles de la tarea */
+.task_details {
+  margin-top: 10px;
+}
+
+.task_description {
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.task_created-at {
+  color: #888;
+}
+
+/* Estilos del pie de página */
+.task_footer {
+  margin-top: 10px;
+  text-align: right;
+}
+
+.delete_button {
+  background-color: #ff4d4d;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.edit_button {
+  background-color: #3399ff;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
