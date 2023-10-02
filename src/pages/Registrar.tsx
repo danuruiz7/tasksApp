@@ -2,6 +2,7 @@ import { useState } from 'react';
 import estilos from './Form.module.css';
 import { useNavigate } from 'react-router';
 import { NavLink } from 'react-router-dom';
+import ErrorSpan from '../components/ErrorSpan';
 
 interface newUser {
   username: string;
@@ -18,6 +19,7 @@ const inicialState: newUser = {
 const Registrar = () => {
   const [newUser, setNewUser] = useState(inicialState);
   const navigate = useNavigate();
+  const [error, setError] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewUser({
@@ -41,15 +43,17 @@ const Registrar = () => {
         requestOptions
       );
       const data = await response.json();
-
       if (!response.ok) {
-        alert(data.msg);
-        throw new Error('Error al registrar el usuario');
+        console.log(data.msg);
+        setError(true);
+        setTimeout(() => {
+          setError(false);
+        }, 5000);
+        return data;
       }
 
       console.log('Usuario registrado con exito ', data);
       setNewUser(inicialState);
-      alert(data.msg);
       navigate('/login');
     } catch (error) {
       console.error(error);
@@ -69,6 +73,7 @@ const Registrar = () => {
             onChange={handleChange}
             value={newUser.username}
           />
+          {error && <ErrorSpan info="Username no valido" />}
         </div>
         <div className={estilos.input_container}>
           <label htmlFor="password1">Contraseña</label>
@@ -79,6 +84,7 @@ const Registrar = () => {
             onChange={handleChange}
             value={newUser.password1}
           />
+          {error && <ErrorSpan info="Password no valido" />}
         </div>
         <div className={estilos.input_container}>
           <label htmlFor="password2">Confirma contraseña</label>
@@ -89,6 +95,7 @@ const Registrar = () => {
             onChange={handleChange}
             value={newUser.password2}
           />
+          {error && <ErrorSpan info="Password no valido" />}
         </div>
         <button className={estilos.button}>Registrarse</button>
       </form>

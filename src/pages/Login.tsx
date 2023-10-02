@@ -3,6 +3,7 @@ import { useAuth } from '../auth/AuthContext';
 import estilos from './Form.module.css';
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import ErrorSpan from '../components/ErrorSpan';
 
 interface Login {
   username: string;
@@ -18,6 +19,7 @@ const Login = () => {
   const { setAuth } = useAuth();
   const navigate = useNavigate();
   const [loginUser, setLoginUser] = useState(InicialState);
+  const [error, setError] = useState(false);
 
   const handleChange = (e: any) => {
     setLoginUser({
@@ -39,20 +41,24 @@ const Login = () => {
         'http://localhost:3000/api/login',
         requestOptions
       );
-      const dataToken = await response.json();
+      const data = await response.json();
 
-      console.log(dataToken);
+      if (!response.ok) {
+        setError(true);
+        setTimeout(() => {
+          setError(false);
+        }, 5000);
+        throw new Error('algo salio mal con el usuario o la contraseña');
+      }
 
       setAuth({
         isAuthenticated: true,
-        token: dataToken.token,
-        user: dataToken.user,
+        token: data.token,
+        user: data.user,
       });
-
-      // localStorage.setItem('token', dataToken.token);
-      sessionStorage.setItem('token', dataToken.token);
       setLoginUser(InicialState);
       navigate('/lista-tareas');
+      return;
     } catch (error) {
       console.log(error);
     }
@@ -71,6 +77,7 @@ const Login = () => {
             onChange={handleChange}
             value={loginUser.username}
           />
+          {error && <ErrorSpan info="Username Incorreto" />}
         </div>
         <div className={estilos.input_container}>
           <label htmlFor="password">Contraseña</label>
@@ -81,6 +88,7 @@ const Login = () => {
             onChange={handleChange}
             value={loginUser.password}
           />
+          {error && <ErrorSpan info="Contraseña incorrecta" />}
         </div>
         <button className={estilos.button}>Iniciar Sesion</button>
       </form>

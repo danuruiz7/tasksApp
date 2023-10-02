@@ -8,9 +8,6 @@ const ListaTarea = () => {
   const { auth, setAuth, setTarea, setUpdate } = useAuth();
   const navigate = useNavigate();
 
-  const token = localStorage.getItem('token');
-  console.log(token);
-
   useEffect(() => {
     async function fetchTareas() {
       try {
@@ -22,7 +19,6 @@ const ListaTarea = () => {
         });
         const data = await response.json();
         if (!response.ok) {
-          alert(data.msg);
           navigate('/login');
           setAuth({
             isAuthenticated: false,
