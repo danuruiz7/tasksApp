@@ -5,8 +5,16 @@ import { useEffect, useState } from 'react';
 import Loader from '../components/Loader';
 import { NavLink } from 'react-router-dom';
 
+interface Tareas {
+  id: number;
+  title: string;
+  description: string;
+  create_at: string;
+  user_id: number;
+}
+
 const ListaTarea = () => {
-  const [tareas, setTareas] = useState();
+  const [tareas, setTareas] = useState<Tareas[]>([]);
   const { auth, setAuth, setTarea, setUpdate } = useAuth();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -37,7 +45,7 @@ const ListaTarea = () => {
         }
 
         for (const tarea of data) {
-          const options = {
+          const options: Intl.DateTimeFormatOptions = {
             day: 'numeric',
             month: 'long', // 'short' para nombres de mes abreviados
             year: 'numeric',
@@ -94,7 +102,7 @@ const ListaTarea = () => {
     deleteTask();
     console.log('handleDelete');
   };
-  console.log('tareas:  ', tareas);
+  console.log('tareas:  ', tareas[0]);
   return (
     <section className={estilos.container}>
       <h1 className={estilos.title}>Tareas de {auth.user}</h1>

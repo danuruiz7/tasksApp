@@ -37,25 +37,28 @@ const CrearTareas = () => {
     setLoding(true);
     //Editar tarea------------------------------------------------------------------------------------
     if (tarea.id) {
-      const response = await fetch(
-        `https://tasksappapi-production.up.railway.app/api/tasks/update-task/${tarea.id}`,
-        {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + auth.token,
-          },
-          body: JSON.stringify(tarea),
-        }
-      );
+      try {
+        await fetch(
+          `https://tasksappapi-production.up.railway.app/api/tasks/update-task/${tarea.id}`,
+          {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: 'Bearer ' + auth.token,
+            },
+            body: JSON.stringify(tarea),
+          }
+        );
 
-      const data = await response.json();
-      setLoding(false);
+        setLoding(false);
 
-      navigate('/lista-tareas');
-      setUpdate(false);
-      setTarea(inicialState);
-      return;
+        navigate('/lista-tareas');
+        setUpdate(false);
+        setTarea(inicialState);
+        return;
+      } catch (error) {
+        return console.log(error);
+      }
     }
 
     //Crear tarea-----------------------------------------------------------------------------------------
