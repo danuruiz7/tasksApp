@@ -18,21 +18,24 @@ function NavbarCustom() {
   return (
     <header className={estilos.header}>
       <div className={estilos.container}>
-        <h3 className={estilos.title}>App Tareas</h3>
+        <NavLink to="/">
+          <h3 className={estilos.title}>TasksApp</h3>
+        </NavLink>
+
         <nav className={estilos.nav}>
           <ul className={estilos.menu}>
             {!auth.isAuthenticated ? (
               <>
                 <NavLink to="/">Inicio</NavLink>
                 <NavLink to="/registrar">Registrar</NavLink>
-                <NavLink to="/login">Login</NavLink>
+                <NavLink to="/login">Iniciar sesión</NavLink>
               </>
             ) : (
               <>
                 <NavLink to="/crear-tarea">
-                  {update ? 'Editar Tarea' : 'Crear Tarea'}
+                  {update ? 'Editar' : 'Crear'}
                 </NavLink>
-                <NavLink to="/lista-tareas">Lista Tareas</NavLink>
+                <NavLink to="/lista-tareas">Listar</NavLink>
                 <NavLink to="/logout" onClick={cerrarSesion}>
                   Cerrar sesion
                 </NavLink>

@@ -2,22 +2,30 @@ import { useNavigate } from 'react-router';
 import { useAuth } from '../auth/AuthContext';
 import estilos from './ListaTarea.module.css';
 import { useEffect, useState } from 'react';
+import Loader from '../components/Loader';
+import { NavLink } from 'react-router-dom';
 
 const ListaTarea = () => {
   const [tareas, setTareas] = useState();
   const { auth, setAuth, setTarea, setUpdate } = useAuth();
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchTareas() {
+      setLoading(true);
       try {
-        const response = await fetch('http://localhost:3000/api/tasks/list', {
-          method: 'GET',
-          headers: {
-            Authorization: 'Bearer ' + auth.token,
-          },
-        });
+        const response = await fetch(
+          'https://tasksappapi-production.up.railway.app/api/tasks/list',
+          {
+            method: 'GET',
+            headers: {
+              Authorization: 'Bearer ' + auth.token,
+            },
+          }
+        );
         const data = await response.json();
+        console.log(data);
         if (!response.ok) {
           navigate('/login');
           setAuth({
@@ -27,13 +35,28 @@ const ListaTarea = () => {
           });
           throw new Error('No se pudo obtener la lista de tareas');
         }
+
+        for (const tarea of data) {
+          const options = {
+            day: 'numeric',
+            month: 'long', // 'short' para nombres de mes abreviados
+            year: 'numeric',
+          };
+
+          tarea.create_at = new Date(tarea.create_at).toLocaleDateString(
+            'es-ES',
+            options
+          );
+        }
+
         setTareas(data);
+        setLoading(false);
       } catch (error) {
         console.error(error);
       }
     }
     fetchTareas();
-    console.log('useEffect');
+    // console.log('useEffect');
   }, []);
 
   const handleEdit = (tarea: any) => {
@@ -43,12 +66,11 @@ const ListaTarea = () => {
   };
 
   const handleDelete = (id: number) => {
-    console.log(id);
-
+    setLoading(true);
     const deleteTask = async () => {
       try {
         const deleteResponse = await fetch(
-          `http://localhost:3000/api/tasks/delete-task/${id}`,
+          `https://tasksappapi-production.up.railway.app/api/tasks/delete-task/${id}`,
           {
             method: 'DELETE',
             headers: {
@@ -63,6 +85,7 @@ const ListaTarea = () => {
         }
 
         setTareas(tareas.filter((tarea: any) => tarea.id !== id));
+        setLoading(false);
       } catch (error) {
         console.error(error);
       }
@@ -71,55 +94,56 @@ const ListaTarea = () => {
     deleteTask();
     console.log('handleDelete');
   };
+  console.log('tareas:  ', tareas);
   return (
     <section className={estilos.container}>
-      <ul className={estilos.task_list}>
-        {tareas?.map((tarea) => (
-          <li key={tarea.id} className={estilos.task_item}>
-            <header className={estilos.task_header}>
-              <h2 className={estilos.task_title}>{tarea.title}</h2>
-              <span className={estilos.task_user}>{auth.user}</span>
-            </header>
-            <section className={estilos.task_details}>
-              <p className={estilos.task_description}>{tarea.description}</p>
-              <span className={estilos.task_created_at}>{tarea.create_at}</span>
-            </section>
-            <footer className={estilos.task_footer}>
-              <button
-                className={estilos.delete_button}
-                onClick={() => handleDelete(tarea.id)}
-              >
-                Eliminar
-              </button>
-              <button
-                className={estilos.edit_button}
-                onClick={() => handleEdit(tarea)}
-              >
-                Editar
-              </button>
-            </footer>
-          </li>
-        ))}
-      </ul>
-
-      {/* <ul>
-        {tareas?.map((tarea) => (
-          <li key={tarea.id}>
-            <header>
-              <h2>{tarea.title}</h2>
-              <span>{tarea.user_id}</span>
-            </header>
-            <section>
-              <p>{tarea.description}</p>
-              <span>{tarea.create_at}</span>
-            </section>
-            <footer>
-              <button onClick={() => handleDelete(tarea.id)}>Eliminar</button>
-              <button onClick={() => handleEdit(tarea)}>Editar</button>
-            </footer>
-          </li>
-        ))}
-      </ul> */}
+      <h1 className={estilos.title}>Tareas de {auth.user}</h1>
+      {loading ? (
+        <Loader />
+      ) : tareas && tareas.length > 0 ? (
+        <ul className={estilos.task_list}>
+          {tareas?.map((tarea) => (
+            <li key={tarea.id} className={estilos.task_item}>
+              <header className={estilos.task_header}>
+                <h2 className={estilos.task_title}>{tarea.title}</h2>
+                <p className={estilos.task_user}>
+                  {' '}
+                  Hecho por{' '}
+                  <span className={estilos.user_name}>{auth.user}</span>{' '}
+                </p>
+              </header>
+              <section className={estilos.task_details}>
+                <p className={estilos.task_description}>{tarea.description}</p>
+              </section>
+              <footer className={estilos.task_footer}>
+                <p className={estilos.task_created_at}>
+                  Creado un: {tarea.create_at}
+                </p>
+                <div className={estilos.container_button}>
+                  <button
+                    className={estilos.delete_button}
+                    onClick={() => handleDelete(tarea.id)}
+                  >
+                    Eliminar
+                  </button>
+                  <button
+                    className={estilos.edit_button}
+                    onClick={() => handleEdit(tarea)}
+                  >
+                    Editar
+                  </button>
+                </div>
+              </footer>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <NavLink to="/crear-tarea">
+          <h2 className={estilos.no_tasks}>
+            No hay tareas, CLICK AQUI PARA CREARLA
+          </h2>
+        </NavLink>
+      )}
     </section>
   );
 };

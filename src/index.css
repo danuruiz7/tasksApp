@@ -1,31 +1,39 @@
-*{
+* {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
 }
 
-html{
+html {
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-  color: white;
+  color: rgb(0, 0, 0);
 }
 
-
-body{
-  background-color: #242424;
+body {
+  background-image: url(../public/fondo.jpg);
+  background-repeat: repeat;
+  background-size: cover;
 }
 
-a{
+a {
   color: white;
   text-decoration: none;
 }
 
-.active{
+.active {
   color: red;
 }
 
-.container_main{
+.container_main {
   max-width: 1000px;
   margin-left: auto;
   margin-right: auto;
 }
 
+@media (max-width: 600px) {
+  body {
+    background-image: url(../public/fondomovil.jpg);
+    background-repeat: repeat-y;
+    background-size: cover;
+  }
+}

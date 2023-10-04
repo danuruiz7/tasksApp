@@ -5,18 +5,23 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  border-radius: 10px 50px 10px 50px;
   margin-top: 5rem;
-  padding: 1rem 0.5rem 2rem 0.5rem;
-  background-color: ;
-  box-shadow: 0px 0px 10px 5px rgba(255, 255, 255, 0.25);
+  padding: 2.5rem 1rem;
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 12px;
+  /* border: 1px solid rgba(0, 0, 0, 0.125); */
+  box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+  color: white;
 }
 
 .title {
   font-size: 3rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   text-align: center;
+  color: white;
+  -webkit-text-stroke: 1px black;
 }
 
 .form {
@@ -32,16 +37,18 @@
   justify-content: space-between;
   gap: 0.2rem;
   margin-bottom: 1rem;
+  width: 100%;
 }
 
 .input_container label {
-  font-size: 1.3rem;
+  font-size: 1.1rem;
 }
 
 .input_container input {
   border-radius: 1rem;
   padding: 0.5rem;
   text-align: center;
+  width: 100%;
 }
 
 .input_container input:focus {
@@ -53,23 +60,28 @@
 
 .input_container textarea {
   border-radius: 1rem;
-  padding: 0.5rem;
+  padding: 0.5rem 1rem;
   resize: none;
   width: 100%;
   height: 8rem;
+}
+
+.button_container {
+  display: flex;
+  gap: 1rem;
 }
 
 .button {
   margin-top: 1rem;
   margin-bottom: 1rem;
   align-self: center;
-  padding: 10px 20px; /* Espaciado interno para el botón */
-  background-color: #007bff; /* Color de fondo del botón */
+  padding: 8px 10px; /* Espaciado interno para el botón */
+  background-color: #00aaff; /* Color de fondo del botón */
   color: #fff; /* Color de texto del botón */
   border: none; /* Sin borde */
   border-radius: 5px;
   cursor: pointer; /* Cambiar el cursor al pasar por encima */
-  font-size: 16px;
+  font-size: 0.9rem;
 }
 
 .button:hover {
@@ -101,5 +113,20 @@
 }
 
 .link_registro {
-  color: red;
+  color: rgb(255, 0, 0);
+  font-weight: bold;
+  font-size: 1.1rem;
+  font-style: oblique;
+}
+
+@media (max-width: 600px) {
+  .container {
+    max-width: 80%;
+    box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+  }
+
+  .title {
+    font-size: 2.5rem;
+    -webkit-text-stroke: 0.5px black;
+  }
 }

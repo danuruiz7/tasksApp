@@ -4,7 +4,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-interface Tarea {
+export interface Tarea {
   id: any;
   title: string;
   description: string;
