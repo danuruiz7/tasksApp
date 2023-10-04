@@ -30,11 +30,11 @@ const authInicial: AuthProps = {
 
 const AuthContext = createContext({
   auth: {} as AuthProps,
-  setAuth: (value: AuthProps) => {},
+  setAuth: (_authInicial: AuthProps) => {},
   tarea: {} as Tarea,
-  setTarea: (value: Tarea) => {},
+  setTarea: (_inicialState: Tarea) => {},
   update: false,
-  setUpdate: (value: boolean) => {},
+  setUpdate: (_update: boolean) => {},
 });
 
 export function AuthProvider({ children }: Props) {
