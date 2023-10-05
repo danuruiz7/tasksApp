@@ -18,7 +18,7 @@ function NavbarCustom() {
   return (
     <header className={estilos.header}>
       <div className={estilos.container}>
-        <NavLink to="/">
+        <NavLink to={auth.isAuthenticated ? '/crear-tarea' : '/'}>
           <h3 className={estilos.title}>TasksApp</h3>
         </NavLink>
 

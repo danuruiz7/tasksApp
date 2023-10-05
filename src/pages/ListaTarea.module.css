@@ -5,12 +5,9 @@
   margin-left: auto;
   margin-right: auto;
   padding-bottom: 1rem;
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(118, 118, 118, 0.5);
   border-radius: 12px;
-  /* border: 1px solid rgba(0, 0, 0, 0.125); */
-  box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: inset -2px -2px 5px 0px rgba(255, 255, 255, 0.3);
   text-align: center;
   color: black;
 }
@@ -46,7 +43,7 @@
   background-color: rgb(255, 255, 255);
   border-radius: 12px;
   /* border: 1px solid rgba(0, 0, 0, 0.125); */
-  box-shadow: inset 1px 1px 10px 1px rgba(0, 0, 0, 0.75);
+  box-shadow: inset 2px 2px 15px 1px rgba(0, 0, 0, 0.75);
 }
 
 /* Estilos del encabezado */
