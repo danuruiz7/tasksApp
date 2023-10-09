@@ -1,5 +1,5 @@
 import { Outlet, Navigate } from 'react-router';
-import { useAuth } from '../auth/AuthContext';
+import { useAuth } from '../ContextoGlobal/VariableGlobales';
 
 const Protected = () => {
   const { auth } = useAuth();

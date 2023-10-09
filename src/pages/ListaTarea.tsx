@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router';
-import { useAuth } from '../auth/AuthContext';
+import { useAuth } from '../ContextoGlobal/VariableGlobales';
 import estilos from './ListaTarea.module.css';
 import { useEffect, useState } from 'react';
 import Loader from '../components/Loader';
@@ -15,7 +15,7 @@ interface Tareas {
 
 const ListaTarea = () => {
   const [tareas, setTareas] = useState<Tareas[]>([]);
-  const { auth, setAuth, setTarea, setUpdate } = useAuth();
+  const { auth, setAuth, setTarea, setUpdate, URL } = useAuth();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -23,15 +23,12 @@ const ListaTarea = () => {
     async function fetchTareas() {
       setLoading(true);
       try {
-        const response = await fetch(
-          'https://tasksappapi-production.up.railway.app/api/tasks/list',
-          {
-            method: 'GET',
-            headers: {
-              Authorization: 'Bearer ' + auth.token,
-            },
-          }
-        );
+        const response = await fetch(`${URL}/api/tasks/list`, {
+          method: 'GET',
+          headers: {
+            Authorization: 'Bearer ' + auth.token,
+          },
+        });
         const data = await response.json();
         console.log(data);
         if (!response.ok) {
@@ -78,7 +75,7 @@ const ListaTarea = () => {
     const deleteTask = async () => {
       try {
         const deleteResponse = await fetch(
-          `https://tasksappapi-production.up.railway.app/api/tasks/delete-task/${id}`,
+          `${URL}/api/tasks/delete-task/${id}`,
           {
             method: 'DELETE',
             headers: {

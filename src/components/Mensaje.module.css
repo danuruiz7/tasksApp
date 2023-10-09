@@ -1,0 +1,8 @@
+.mensaje {
+  background-color: rgba(59, 98, 0, 0.785);
+  color: rgba(172, 255, 47, 0.785);
+  padding: 0.5rem 1rem;
+  text-align: center;
+  font-weight: 700;
+  border-radius: 12px;
+}

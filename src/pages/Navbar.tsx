@@ -1,6 +1,6 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import estilos from './Navbar.module.css';
-import { useAuth } from '../auth/AuthContext';
+import { useAuth } from '../ContextoGlobal/VariableGlobales';
 
 function NavbarCustom() {
   const { auth, setAuth, update } = useAuth();

@@ -65,6 +65,7 @@
 
 .button_container {
   display: flex;
+  justify-content: center;
   gap: 1rem;
 }
 
@@ -93,7 +94,7 @@
   margin-top: 1rem;
   align-self: center;
   padding: 10px 20px; /* Espaciado interno para el botón */
-  background-color: #04fc29; /* Color de fondo del botón */
+  background-color: #1504fc; /* Color de fondo del botón */
   color: #fff; /* Color de texto del botón */
   border: none; /* Sin borde */
   border-radius: 5px;
@@ -116,6 +117,17 @@
   font-style: oblique;
 }
 
+.ul_info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ul_info li {
+  list-style: none;
+  font-size: 0.84rem;
+}
+
 @media (max-width: 600px) {
   .container {
     max-width: 80%;
@@ -125,5 +137,10 @@
   .title {
     font-size: 2.5rem;
     -webkit-text-stroke: 0.5px black;
+  }
+
+  .ul_info li {
+    list-style: none;
+    font-size: 0.74rem;
   }
 }

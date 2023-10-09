@@ -1,9 +1,10 @@
 import { useNavigate } from 'react-router';
-import { useAuth } from '../auth/AuthContext';
+import { useAuth } from '../ContextoGlobal/VariableGlobales';
 import estilos from '../pages/Form.module.css';
 import { useState } from 'react';
 import Loader from './Loader';
 import ErrorSpan from './ErrorSpan';
+import MensajeSpan from './Mensaje';
 
 interface Tarea {
   id: any;
@@ -18,9 +19,10 @@ const inicialState: Tarea = {
 };
 
 const CrearTareas = () => {
-  const { auth, tarea, setTarea, update, setUpdate } = useAuth();
+  const { auth, tarea, setTarea, update, setUpdate, URL } = useAuth();
   const [loading, setLoding] = useState(false);
-  const [errorspan, setErrorSpan] = useState(false);
+  const [errorSpan, setErrorSpan] = useState(false);
+  const [mensajeSpan, setMensajeSpan] = useState(false);
 
   const navigate = useNavigate();
 
@@ -35,20 +37,17 @@ const CrearTareas = () => {
     e.preventDefault();
     console.log(e);
     setLoding(true);
-    //Editar tarea------------------------------------------------------------------------------------
+    //Editar tarea
     if (tarea.id) {
       try {
-        await fetch(
-          `https://tasksappapi-production.up.railway.app/api/tasks/update-task/${tarea.id}`,
-          {
-            method: 'PATCH',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: 'Bearer ' + auth.token,
-            },
-            body: JSON.stringify(tarea),
-          }
-        );
+        await fetch(`${URL}/api/tasks/update-task/${tarea.id}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + auth.token,
+          },
+          body: JSON.stringify(tarea),
+        });
 
         setLoding(false);
 
@@ -63,17 +62,14 @@ const CrearTareas = () => {
 
     //Crear tarea-----------------------------------------------------------------------------------------
     try {
-      const response = await fetch(
-        'https://tasksappapi-production.up.railway.app/api/tasks/create',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + auth.token,
-          },
-          body: JSON.stringify(tarea),
-        }
-      );
+      const response = await fetch(`${URL}/api/tasks/create`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + auth.token,
+        },
+        body: JSON.stringify(tarea),
+      });
 
       const data = await response.json();
 
@@ -85,6 +81,11 @@ const CrearTareas = () => {
         }, 5000);
         throw new Error('algo salio mal con el usuario o la contraseña');
       }
+
+      setMensajeSpan(true);
+      setTimeout(() => {
+        setMensajeSpan(false);
+      }, 5000);
 
       console.log(data);
       setLoding(false);
@@ -113,7 +114,7 @@ const CrearTareas = () => {
                 onChange={handleChange}
                 value={tarea.title}
               />
-              {errorspan && <ErrorSpan info="Error en el nombre de la tarea" />}
+              {errorSpan && <ErrorSpan info="Error en el nombre de la tarea" />}
             </div>
 
             <div className={estilos.input_container}>
@@ -124,7 +125,7 @@ const CrearTareas = () => {
                 onChange={handleChange}
                 value={tarea.description}
               />
-              {errorspan && (
+              {errorSpan && (
                 <ErrorSpan info="Error en la descripcion de la tarea" />
               )}
             </div>
@@ -132,12 +133,8 @@ const CrearTareas = () => {
               <button className={update ? estilos.button_edit : estilos.button}>
                 {update ? 'Editar Tarea' : 'Nueva Tarea'}
               </button>
-              {!update && (
-                <button id="hola" className={estilos.button}>
-                  Crear e ir a lista
-                </button>
-              )}
             </div>
+            {mensajeSpan && <MensajeSpan info="Tarea creada con exito" />}
           </form>
         </>
       )}

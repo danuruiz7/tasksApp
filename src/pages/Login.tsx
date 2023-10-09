@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router';
-import { useAuth } from '../auth/AuthContext';
+import { useAuth } from '../ContextoGlobal/VariableGlobales';
 import estilos from './Form.module.css';
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
@@ -17,7 +17,7 @@ const InicialState = {
 };
 
 const Login = () => {
-  const { setAuth } = useAuth();
+  const { setAuth, URL } = useAuth();
   const navigate = useNavigate();
   const [loginUser, setLoginUser] = useState(InicialState);
   const [error, setError] = useState(false);
@@ -39,10 +39,7 @@ const Login = () => {
         body: JSON.stringify(loginUser),
       };
       setLoading(true);
-      const response = await fetch(
-        'https://tasksappapi-production.up.railway.app/api/login',
-        requestOptions
-      );
+      const response = await fetch(`${URL}/api/login`, requestOptions);
       const data = await response.json();
 
       setLoading(false);
@@ -59,6 +56,7 @@ const Login = () => {
         token: data.token,
         user: data.user,
       });
+
       setLoginUser(InicialState);
       navigate('/lista-tareas');
       return;

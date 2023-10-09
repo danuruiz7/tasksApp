@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router';
 import { NavLink } from 'react-router-dom';
 import ErrorSpan from '../components/ErrorSpan';
 import Loader from '../components/Loader';
+import { useAuth } from '../ContextoGlobal/VariableGlobales';
 
 interface newUser {
   username: string;
@@ -18,6 +19,7 @@ const inicialState: newUser = {
 };
 
 const Registrar = () => {
+  const { URL } = useAuth();
   const [newUser, setNewUser] = useState(inicialState);
   const navigate = useNavigate();
   const [error, setError] = useState(false);
@@ -44,10 +46,7 @@ const Registrar = () => {
         body: JSON.stringify(newUser),
       };
       setLoading(true);
-      const response = await fetch(
-        'https://tasksappapi-production.up.railway.app/api/register',
-        requestOptions
-      );
+      const response = await fetch(`${URL}/api/register`, requestOptions);
       const data = await response.json();
       setLoading(false);
       if (!response.ok) {
@@ -84,7 +83,15 @@ const Registrar = () => {
                 onChange={handleChange}
                 value={newUser.username}
               />
-              {error && <ErrorSpan info="Username no valido" />}
+              {error ? (
+                <ErrorSpan info="Username no valido" />
+              ) : (
+                <ul className={estilos.ul_info}>
+                  <li>- No puede contener espacios</li>
+                  <li>- Distinge mayusculas y minusculas</li>
+                  <li>- Debe contener al menos 3 caracteres</li>
+                </ul>
+              )}
             </div>
             <div className={estilos.input_container}>
               <label htmlFor="password1">Contraseña</label>
@@ -95,7 +102,15 @@ const Registrar = () => {
                 onChange={handleChange}
                 value={newUser.password1}
               />
-              {error && <ErrorSpan info="Password no valido" />}
+              {error ? (
+                <ErrorSpan info="Password no valido" />
+              ) : (
+                <ul className={estilos.ul_info}>
+                  <li>- No puede contener espacios</li>
+                  <li>- Distinge mayusculas y minusculas</li>
+                  <li>- Debe contener al menos 3 caracteres</li>
+                </ul>
+              )}
             </div>
             <div className={estilos.input_container}>
               <label htmlFor="password2">Confirma contraseña</label>

@@ -35,12 +35,14 @@ const AuthContext = createContext({
   setTarea: (_inicialState: Tarea) => {},
   update: false,
   setUpdate: (_update: boolean) => {},
+  URL: '',
 });
 
 export function AuthProvider({ children }: Props) {
   const [auth, setAuth] = useState(authInicial);
   const [tarea, setTarea] = useState(inicialState);
   const [update, setUpdate] = useState(false);
+  const URL = 'https://tasksappapi-production.up.railway.app';
 
   return (
     <AuthContext.Provider
@@ -51,6 +53,7 @@ export function AuthProvider({ children }: Props) {
         setTarea,
         update,
         setUpdate,
+        URL,
       }}
     >
       {children}
