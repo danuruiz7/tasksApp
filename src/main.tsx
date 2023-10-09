@@ -3,14 +3,14 @@ import ReactDOM from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
 import { BrowserRouter } from 'react-router-dom';
-import { AuthProvider } from './ContextoGlobal/VariableGlobales.tsx';
+import { VariablesProvider } from './ContextoGlobal/VariableGlobales.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <AuthProvider>
+    <VariablesProvider>
       <BrowserRouter>
         <App />
       </BrowserRouter>
-    </AuthProvider>
+    </VariablesProvider>
   </React.StrictMode>
 );

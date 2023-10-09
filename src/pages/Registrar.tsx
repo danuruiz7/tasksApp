@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router';
 import { NavLink } from 'react-router-dom';
 import ErrorSpan from '../components/ErrorSpan';
 import Loader from '../components/Loader';
-import { useAuth } from '../ContextoGlobal/VariableGlobales';
+import { useVariablesGlobal } from '../ContextoGlobal/VariableGlobales';
 
 interface newUser {
   username: string;
@@ -19,7 +19,7 @@ const inicialState: newUser = {
 };
 
 const Registrar = () => {
-  const { URL } = useAuth();
+  const { URL } = useVariablesGlobal();
   const [newUser, setNewUser] = useState(inicialState);
   const navigate = useNavigate();
   const [error, setError] = useState(false);

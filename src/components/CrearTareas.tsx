@@ -1,31 +1,40 @@
 import { useNavigate } from 'react-router';
-import { useAuth } from '../ContextoGlobal/VariableGlobales';
+import { useVariablesGlobal } from '../ContextoGlobal/VariableGlobales';
 import estilos from '../pages/Form.module.css';
 import { useState } from 'react';
 import Loader from './Loader';
 import ErrorSpan from './ErrorSpan';
 import MensajeSpan from './Mensaje';
 
+// Interfaz para la tarea
 interface Tarea {
-  id: any;
+  id: string;
   title: string;
   description: string;
 }
 
+// Estado inicial para una tarea
 const inicialState: Tarea = {
   id: '',
   title: '',
   description: '',
 };
 
+// Componente para crear o editar tareas
 const CrearTareas = () => {
-  const { auth, tarea, setTarea, update, setUpdate, URL } = useAuth();
+  // Obtiene el estado de autenticación, tarea actual y funciones del contexto de variables globales
+  const { auth, tarea, setTarea, update, setUpdate, URL } =
+    useVariablesGlobal();
+
+  // Estados para el cargando, errores y mensajes
   const [loading, setLoding] = useState(false);
   const [errorSpan, setErrorSpan] = useState(false);
   const [mensajeSpan, setMensajeSpan] = useState(false);
 
+  // Función de navegación proporcionada por react-router
   const navigate = useNavigate();
 
+  // Función para manejar cambios en los campos del formulario
   const handleChange = (e: any) => {
     setTarea({
       ...tarea,
@@ -33,11 +42,12 @@ const CrearTareas = () => {
     });
   };
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(e);
+    // Muestra el loader mientras se procesa la solicitud
     setLoding(true);
-    //Editar tarea
+
+    // Si en la tarea existe la propiedad "id", entonces se editará la tarea
     if (tarea.id) {
       try {
         await fetch(`${URL}/api/tasks/update-task/${tarea.id}`, {
@@ -49,6 +59,7 @@ const CrearTareas = () => {
           body: JSON.stringify(tarea),
         });
 
+        // Oculta el loader y redirige a la lista de tareas
         setLoding(false);
 
         navigate('/lista-tareas');
@@ -56,11 +67,12 @@ const CrearTareas = () => {
         setTarea(inicialState);
         return;
       } catch (error) {
-        return console.log(error);
+        // Maneja errores en la consola
+        return console.error(error);
       }
     }
 
-    //Crear tarea-----------------------------------------------------------------------------------------
+    // Si en la tarea NO existe la propiedad "id", entonces se creará una nueva tarea
     try {
       const response = await fetch(`${URL}/api/tasks/create`, {
         method: 'POST',
@@ -73,6 +85,7 @@ const CrearTareas = () => {
 
       const data = await response.json();
 
+      // Si la respuesta no es exitosa,oculta el loader y muestra un mensaje de error
       if (!response.ok) {
         setLoding(false);
         setErrorSpan(true);
@@ -82,11 +95,13 @@ const CrearTareas = () => {
         throw new Error('algo salio mal con el usuario o la contraseña');
       }
 
+      // Si la respuesta es exitosa, muestra un mensaje de éxito y oculta el mensaje después de 5 segundos
       setMensajeSpan(true);
       setTimeout(() => {
         setMensajeSpan(false);
       }, 5000);
 
+      // Muestra los datos de la respuesta en la consola, oculta el loader y restablece el formulario
       console.log(data);
       setLoding(false);
       setTarea(inicialState);
@@ -98,10 +113,12 @@ const CrearTareas = () => {
   return (
     <section className={estilos.container}>
       {loading ? (
+        // Muestra el componente Loader mientras se está procesando la solicitud
         <Loader />
       ) : (
         <>
           <h2 className={estilos.title}>
+            {/* El título cambiará dependiendo de si se está editando o creando una tarea */}
             {update ? 'Editar Tarea' : 'Crear Tarea'}
           </h2>
           <form onSubmit={handleSubmit} className={estilos.form}>
@@ -114,6 +131,7 @@ const CrearTareas = () => {
                 onChange={handleChange}
                 value={tarea.title}
               />
+              {/* Muestra un mensaje de error si hay un error en el título de la tarea */}
               {errorSpan && <ErrorSpan info="Error en el nombre de la tarea" />}
             </div>
 
@@ -125,15 +143,18 @@ const CrearTareas = () => {
                 onChange={handleChange}
                 value={tarea.description}
               />
+              {/* Muestra un mensaje de error si hay un error en la descripción de la tarea */}
               {errorSpan && (
                 <ErrorSpan info="Error en la descripcion de la tarea" />
               )}
             </div>
             <div className={estilos.button_container}>
+              {/* Botón para guardar o editar la tarea, dependiendo de si es una tarea nueva o una tarea existente */}
               <button className={update ? estilos.button_edit : estilos.button}>
                 {update ? 'Editar Tarea' : 'Nueva Tarea'}
               </button>
             </div>
+            {/* Muestra un mensaje de éxito si la tarea se crea correctamente */}
             {mensajeSpan && <MensajeSpan info="Tarea creada con exito" />}
           </form>
         </>
