@@ -1,0 +1,22 @@
+Descripción:
+
+La aplicación utiliza React Router 6 para controlar las rutas públicas y privadas.
+
+Instrucciones:
+
+Para instalar las dependencias, ejecuta el siguiente comando en la terminal:
+
+npm install
+
+Este comando instalará las dependencias necesarias para la aplicación, incluyendo React Router 6 y otras bibliotecas si están especificadas en el archivo package.json.
+
+Para iniciar la aplicación, utiliza el siguiente comando:
+
+
+npm run dev
+
+Este comando iniciará la aplicación en modo de desarrollo. Abrirá un servidor local y permitirá la visualización y prueba de la aplicación en un navegador web.
+
+
+
+
